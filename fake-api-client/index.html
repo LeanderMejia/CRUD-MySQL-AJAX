@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abel&family=Anton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/8395324130.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Abel';
+            margin: 20px;
+            font-size: 15px;
+        }
+        .card {
+            
+            box-shadow: 0 0 20px rgb(78, 80, 80);
+        }
+        .no-wrap {
+            white-space:nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="d-flex flex-column mb-3 justify-content-center align-items-center">
+            <div class="card">
+                <div class="card-body">
+                    <div class="p-2">
+                        <form method="post" enctype="multipart/form-data" action="index.html">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" name="name" id="name" required autofocus>
+                            </div>
+                            <div class="mb-3">
+                                <label for="unit" class="form-label">Unit</label>
+                                <input type="text" class="form-control" name="unit" id="unit" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price</label>
+                                <input type="number" class="form-control" name="price" id="price" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="date" class="form-control" name="date" id="date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="inventory" class="form-label">Available Inventory</label>
+                                <input type="number" class="form-control" name="inventory" id="inventory" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Image</label>
+                                <input type="file" class="form-control" name="image" id="image" accept="image/jpeg, image/png" required>
+                            </div>
+                            <button class="btn btn-primary w-100" name="addBtn" id="addBtn">Add</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column mb-3 justify-content-center align-items-center p-2 mt-5 table-responsive w-100">
+                <table class="table table-striped table-hover table-bordered table-sm w-75">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Name</th>
+                            <th>Unit</th>
+                            <th>Price</th>
+                            <th>Date</th>
+                            <th>Available Inventory</th>
+                            <th>Available Cost</th>
+                            <th>Image</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" id="updateForm" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="text" class="form-control" name="id" id="id" hidden>
+                        <input type="text" class="form-control" name="previousImage" id="previousImage" hidden>
+                        <div class="mb-3">
+                            <label for="updateName" class="form-label">Name</label>
+                            <input type="text" class="form-control" name="updateName" id="updateName" required autofocus>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateUnit" class="form-label">Unit</label>
+                            <input type="text" class="form-control" name="updateUnit" id="updateUnit" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updatePrice" class="form-label">Price</label>
+                            <input type="number" class="form-control" name="updatePrice" id="updatePrice" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateDate" class="form-label">Date</label>
+                            <input type="date" class="form-control" name="updateDate" id="updateDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateInventory" class="form-label">Available Inventory</label>
+                            <input type="number" class="form-control" name="updateInventory" id="updateInventory" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateImage" class="form-label">Image</label>
+                            <input type="file" class="form-control" name="updateImage" id="updateImage" accept="image/jpeg, image/png" required>
+                            <img src="" class="img-thumbnail" id="updateImagePreview" style="height: 50px;">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="updateBtn" name="updateBtn">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        function readData() {
+            var str = "";
+            $.ajax({
+                type: "GET",
+                url: "http://localhost/projects/AJAX-CRUD/fake-api-server/read.php",
+                success: function (response) {
+                    var data = JSON.parse(response);
+                    $.each(data, function (i, item) {
+                        str += `
+                        <tr>
+                            <td class="no-wrap">${item.name}</td>
+                            <td class="no-wrap">${item.unit}</td>
+                            <td class="no-wrap">${item.price}</td>
+                            <td class="no-wrap">${item.date}</td>
+                            <td class="no-wrap">${item.inventory}</td>
+                            <td class="no-wrap">${item.cost}</td>
+                            <td class="no-wrap"><img src="../img/${item.image}" class="img-thumbnail" style="height: 50px;"></td>
+                            <td class="text-center align-middle p-0 m-0 no-wrap">
+                                <button class="btn btn-primary btn-sm ml-2" id="openModalBtn" name="openModalBtn" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="${item.id}"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-danger btn-sm" id="deleteBtn" name="deleteBtn" data-id="${item.id}"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                    });
+                    $("table").find("tr:gt(0)").remove();
+                    $("table > tbody:last-child").append(str);
+                }
+            });
+        }
+
+        function filterData(itemId) {
+            $.ajax({
+                    type: "GET",
+                    url: 'http://localhost/projects/AJAX-CRUD/fake-api-server/filterQuery.php',
+                    data: { id: itemId },
+                    dataType: "json",
+                    success: function (data) {
+                        $("#id").val(data[0].id);
+                        $("#previousImage").val(data[0].image);
+                        $("#updateName").val(data[0].name);
+                        $("#updateUnit").val(data[0].unit);
+                        $("#updatePrice").val(data[0].price);
+                        var dateObj = new Date(data[0].date);
+                        var formattedDate = dateObj.toLocaleDateString("en-ca");
+                        $("#updateDate").val(formattedDate);
+                        $("#updateInventory").val(data[0].inventory);
+                        $("#updateImagePreview").attr("src", "../img/" + data[0].image);
+                    }
+                });
+        }
+
+        function createData() {
+            var formData = new FormData($("form")[0]);
+            $.ajax({
+                type: "POST",
+                url: "http://localhost/projects/AJAX-CRUD/fake-api-server/create.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response == "Success") {
+                        $("#name").val("");
+                        $("#unit").val("");
+                        $("#price").val("");
+                        $("#date").val("");
+                        $("#inventory").val("");
+                        $("#image").val("");
+
+                        $("#name").focus();
+                        readData();
+                    }
+                }
+            });
+        }
+        
+        function updateData() {
+            var updateForm = new FormData($("#updateForm")[0]);
+            for (let pair of updateForm.entries()) {
+                console.log(pair[0] + ': ' + pair[1]); // This will print all values in updateForm field in console
+            }
+            $.ajax({
+                type: "POST",
+                url: "http://localhost/projects/AJAX-CRUD/fake-api-server/update.php",
+                data: updateForm,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response == "Success") {
+                        alert("Data updated successfully!");
+                        readData();
+                    } else {
+                        alert("Error updating data");
+                    }
+                }
+            });
+        }
+
+        function deleteData(deleteID) {
+            $.ajax({
+                url: 'http://localhost/projects/AJAX-CRUD/fake-api-server/delete.php',
+                type: 'POST',
+                data: { id: deleteID },
+                success: function (response) {
+                    if (response == "Success") {
+                        $("#deleteBtn").parent().parent().remove();
+                        FetchData();
+                    }
+                }
+            });
+        }
+
+        readData();
+
+        $(document).ready(function () {
+            $("#addBtn").click(function (e) {
+                e.preventDefault();
+                createData();
+            });
+
+        });
+
+        $(document).ready(function () {
+             $(document).on('click', '#openModalBtn', function (e) {
+                e.preventDefault();
+                var itemId = $(this).data('id');
+                filterData(itemId);
+            });
+        });
+
+        $(document).ready(function () {
+                $(document).on('click', '#updateBtn', function (e) {
+                    e.preventDefault();
+                    updateData();
+                });
+            });
+
+        $(document).on('click', '#deleteBtn', function (e) {
+            if (confirm('Are you sure want to delete?')) {
+                e.preventDefault;
+                var deleteID = $(this).data('id');
+                deleteData(deleteID);
+            }
+        });
+
+    </script>
+</body>
+
+</html>
