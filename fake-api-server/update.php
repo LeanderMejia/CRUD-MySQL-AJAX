@@ -29,10 +29,11 @@
         $price = $_POST['updatePrice'];
         $date = $_POST['updateDate'];
         $inventory = $_POST['updateInventory'];
-        
+        $cost = $price * $inventory;
+
         $sql = "
             UPDATE tbl_data 
-            SET name = '$name', unit = '$unit', price = '$price', date = '$date', inventory = '$inventory', image = '$currentImage'
+            SET name = '$name', unit = '$unit', price = '$price', date = '$date', inventory = '$inventory', cost = '$cost', image = '$currentImage'
             WHERE id = '$id'
         ";
         updateQuery($conn, $sql);
